@@ -9,38 +9,187 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedTratamentosRouteImport } from './routes/_authenticated/tratamentos'
+import { Route as AuthenticatedPacientesRouteImport } from './routes/_authenticated/pacientes'
+import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
+import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
+import { Route as AuthenticatedDentistasRouteImport } from './routes/_authenticated/dentistas'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedConveniosRouteImport } from './routes/_authenticated/convenios'
+import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
+import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedTratamentosRoute =
+  AuthenticatedTratamentosRouteImport.update({
+    id: '/tratamentos',
+    path: '/tratamentos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPacientesRoute = AuthenticatedPacientesRouteImport.update({
+  id: '/pacientes',
+  path: '/pacientes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedEstoqueRoute = AuthenticatedEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDentistasRoute = AuthenticatedDentistasRouteImport.update({
+  id: '/dentistas',
+  path: '/dentistas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedConveniosRoute = AuthenticatedConveniosRouteImport.update({
+  id: '/convenios',
+  path: '/convenios',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPacientesIdRoute =
+  AuthenticatedPacientesIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedPacientesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/agenda': typeof AuthenticatedAgendaRoute
+  '/convenios': typeof AuthenticatedConveniosRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dentistas': typeof AuthenticatedDentistasRoute
+  '/estoque': typeof AuthenticatedEstoqueRoute
+  '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/pacientes': typeof AuthenticatedPacientesRouteWithChildren
+  '/tratamentos': typeof AuthenticatedTratamentosRoute
+  '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/agenda': typeof AuthenticatedAgendaRoute
+  '/convenios': typeof AuthenticatedConveniosRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dentistas': typeof AuthenticatedDentistasRoute
+  '/estoque': typeof AuthenticatedEstoqueRoute
+  '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/pacientes': typeof AuthenticatedPacientesRouteWithChildren
+  '/tratamentos': typeof AuthenticatedTratamentosRoute
+  '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/convenios': typeof AuthenticatedConveniosRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/dentistas': typeof AuthenticatedDentistasRoute
+  '/_authenticated/estoque': typeof AuthenticatedEstoqueRoute
+  '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/_authenticated/pacientes': typeof AuthenticatedPacientesRouteWithChildren
+  '/_authenticated/tratamentos': typeof AuthenticatedTratamentosRoute
+  '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/agenda'
+    | '/convenios'
+    | '/dashboard'
+    | '/dentistas'
+    | '/estoque'
+    | '/financeiro'
+    | '/pacientes'
+    | '/tratamentos'
+    | '/pacientes/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/agenda'
+    | '/convenios'
+    | '/dashboard'
+    | '/dentistas'
+    | '/estoque'
+    | '/financeiro'
+    | '/pacientes'
+    | '/tratamentos'
+    | '/pacientes/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/agenda'
+    | '/_authenticated/convenios'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/dentistas'
+    | '/_authenticated/estoque'
+    | '/_authenticated/financeiro'
+    | '/_authenticated/pacientes'
+    | '/_authenticated/tratamentos'
+    | '/_authenticated/pacientes/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +197,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/tratamentos': {
+      id: '/_authenticated/tratamentos'
+      path: '/tratamentos'
+      fullPath: '/tratamentos'
+      preLoaderRoute: typeof AuthenticatedTratamentosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pacientes': {
+      id: '/_authenticated/pacientes'
+      path: '/pacientes'
+      fullPath: '/pacientes'
+      preLoaderRoute: typeof AuthenticatedPacientesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/financeiro': {
+      id: '/_authenticated/financeiro'
+      path: '/financeiro'
+      fullPath: '/financeiro'
+      preLoaderRoute: typeof AuthenticatedFinanceiroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estoque': {
+      id: '/_authenticated/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof AuthenticatedEstoqueRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dentistas': {
+      id: '/_authenticated/dentistas'
+      path: '/dentistas'
+      fullPath: '/dentistas'
+      preLoaderRoute: typeof AuthenticatedDentistasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/convenios': {
+      id: '/_authenticated/convenios'
+      path: '/convenios'
+      fullPath: '/convenios'
+      preLoaderRoute: typeof AuthenticatedConveniosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/agenda': {
+      id: '/_authenticated/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AuthenticatedAgendaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pacientes/$id': {
+      id: '/_authenticated/pacientes/$id'
+      path: '/$id'
+      fullPath: '/pacientes/$id'
+      preLoaderRoute: typeof AuthenticatedPacientesIdRouteImport
+      parentRoute: typeof AuthenticatedPacientesRoute
+    }
   }
 }
 
+interface AuthenticatedPacientesRouteChildren {
+  AuthenticatedPacientesIdRoute: typeof AuthenticatedPacientesIdRoute
+}
+
+const AuthenticatedPacientesRouteChildren: AuthenticatedPacientesRouteChildren =
+  {
+    AuthenticatedPacientesIdRoute: AuthenticatedPacientesIdRoute,
+  }
+
+const AuthenticatedPacientesRouteWithChildren =
+  AuthenticatedPacientesRoute._addFileChildren(
+    AuthenticatedPacientesRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedConveniosRoute: typeof AuthenticatedConveniosRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDentistasRoute: typeof AuthenticatedDentistasRoute
+  AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRoute
+  AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
+  AuthenticatedPacientesRoute: typeof AuthenticatedPacientesRouteWithChildren
+  AuthenticatedTratamentosRoute: typeof AuthenticatedTratamentosRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedConveniosRoute: AuthenticatedConveniosRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDentistasRoute: AuthenticatedDentistasRoute,
+  AuthenticatedEstoqueRoute: AuthenticatedEstoqueRoute,
+  AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
+  AuthenticatedPacientesRoute: AuthenticatedPacientesRouteWithChildren,
+  AuthenticatedTratamentosRoute: AuthenticatedTratamentosRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
