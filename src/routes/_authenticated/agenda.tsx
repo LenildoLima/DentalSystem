@@ -147,7 +147,7 @@ function AgendaPage() {
               </div>
             ))}
             {HOURS.map((h) => (
-              <>
+              <React.Fragment key={`h-${h}`}>
                 <div key={`h-${h}`} className="border-b border-r p-2 text-xs text-muted-foreground text-right">{`${h.toString().padStart(2, "0")}:00`}</div>
                 {days.map((d) => {
                   const key = `${format(d, "yyyy-MM-dd")}-${h}`;
