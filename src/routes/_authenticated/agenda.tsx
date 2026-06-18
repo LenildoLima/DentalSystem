@@ -169,7 +169,7 @@ function AgendaPage() {
                     </div>
                   );
                 })}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>
