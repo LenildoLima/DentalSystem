@@ -19,6 +19,7 @@ export type Database = {
           created_at: string | null
           data_hora: string
           dentista_id: string
+          empresa_id: string | null
           id: string
           observacoes: string | null
           paciente_id: string
@@ -29,6 +30,7 @@ export type Database = {
           created_at?: string | null
           data_hora: string
           dentista_id: string
+          empresa_id?: string | null
           id?: string
           observacoes?: string | null
           paciente_id: string
@@ -39,6 +41,7 @@ export type Database = {
           created_at?: string | null
           data_hora?: string
           dentista_id?: string
+          empresa_id?: string | null
           id?: string
           observacoes?: string | null
           paciente_id?: string
@@ -54,6 +57,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "fk_agendamento_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "fk_agendamento_paciente"
             columns: ["paciente_id"]
             isOneToOne: false
@@ -65,6 +75,7 @@ export type Database = {
       anamnese: {
         Row: {
           alergias: string | null
+          empresa_id: string | null
           historico_medico: string | null
           id: string
           medicamentos: string | null
@@ -73,6 +84,7 @@ export type Database = {
         }
         Insert: {
           alergias?: string | null
+          empresa_id?: string | null
           historico_medico?: string | null
           id?: string
           medicamentos?: string | null
@@ -81,6 +93,7 @@ export type Database = {
         }
         Update: {
           alergias?: string | null
+          empresa_id?: string | null
           historico_medico?: string | null
           id?: string
           medicamentos?: string | null
@@ -88,6 +101,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_anamnese_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "fk_anamnese_paciente"
             columns: ["paciente_id"]
@@ -100,29 +120,41 @@ export type Database = {
       convenios: {
         Row: {
           created_at: string | null
+          empresa_id: string | null
           id: string
           nome: string
           tabela_cobertura: Json | null
         }
         Insert: {
           created_at?: string | null
+          empresa_id?: string | null
           id?: string
           nome: string
           tabela_cobertura?: Json | null
         }
         Update: {
           created_at?: string | null
+          empresa_id?: string | null
           id?: string
           nome?: string
           tabela_cobertura?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_convenio_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dentistas: {
         Row: {
           created_at: string | null
           cro: string | null
           email: string | null
+          empresa_id: string | null
           especialidade: string | null
           id: string
           nome: string
@@ -132,6 +164,7 @@ export type Database = {
           created_at?: string | null
           cro?: string | null
           email?: string | null
+          empresa_id?: string | null
           especialidade?: string | null
           id?: string
           nome: string
@@ -141,10 +174,70 @@ export type Database = {
           created_at?: string | null
           cro?: string | null
           email?: string | null
+          empresa_id?: string | null
           especialidade?: string | null
           id?: string
           nome?: string
           telefone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_dentista_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      empresas: {
+        Row: {
+          ativo: boolean | null
+          banner_url: string | null
+          cnpj: string | null
+          cor_primaria: string | null
+          cor_secundaria: string | null
+          created_at: string | null
+          email: string | null
+          endereco: string | null
+          id: string
+          logo_url: string | null
+          nome: string
+          nome_fantasia: string | null
+          telefone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          banner_url?: string | null
+          cnpj?: string | null
+          cor_primaria?: string | null
+          cor_secundaria?: string | null
+          created_at?: string | null
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          logo_url?: string | null
+          nome: string
+          nome_fantasia?: string | null
+          telefone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          banner_url?: string | null
+          cnpj?: string | null
+          cor_primaria?: string | null
+          cor_secundaria?: string | null
+          created_at?: string | null
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          logo_url?: string | null
+          nome?: string
+          nome_fantasia?: string | null
+          telefone?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -152,6 +245,7 @@ export type Database = {
         Row: {
           categoria: string | null
           created_at: string | null
+          empresa_id: string | null
           fornecedor: string | null
           id: string
           nome: string
@@ -162,6 +256,7 @@ export type Database = {
         Insert: {
           categoria?: string | null
           created_at?: string | null
+          empresa_id?: string | null
           fornecedor?: string | null
           id?: string
           nome: string
@@ -172,6 +267,7 @@ export type Database = {
         Update: {
           categoria?: string | null
           created_at?: string | null
+          empresa_id?: string | null
           fornecedor?: string | null
           id?: string
           nome?: string
@@ -179,11 +275,20 @@ export type Database = {
           quantidade_minima?: number | null
           unidade?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_estoque_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       estoque_movimentacoes: {
         Row: {
           data: string | null
+          empresa_id: string | null
           estoque_id: string
           id: string
           motivo: string | null
@@ -193,6 +298,7 @@ export type Database = {
         }
         Insert: {
           data?: string | null
+          empresa_id?: string | null
           estoque_id: string
           id?: string
           motivo?: string | null
@@ -202,6 +308,7 @@ export type Database = {
         }
         Update: {
           data?: string | null
+          empresa_id?: string | null
           estoque_id?: string
           id?: string
           motivo?: string | null
@@ -217,6 +324,13 @@ export type Database = {
             referencedRelation: "estoque"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_movimentacao_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
         ]
       }
       financeiro: {
@@ -224,6 +338,7 @@ export type Database = {
           convenio_guia: string | null
           created_at: string | null
           data_pagamento: string | null
+          empresa_id: string | null
           forma_pagamento: string | null
           id: string
           paciente_id: string
@@ -236,6 +351,7 @@ export type Database = {
           convenio_guia?: string | null
           created_at?: string | null
           data_pagamento?: string | null
+          empresa_id?: string | null
           forma_pagamento?: string | null
           id?: string
           paciente_id: string
@@ -248,6 +364,7 @@ export type Database = {
           convenio_guia?: string | null
           created_at?: string | null
           data_pagamento?: string | null
+          empresa_id?: string | null
           forma_pagamento?: string | null
           id?: string
           paciente_id?: string
@@ -257,6 +374,13 @@ export type Database = {
           valor?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_financeiro_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "fk_financeiro_paciente"
             columns: ["paciente_id"]
@@ -278,6 +402,7 @@ export type Database = {
           data: string | null
           dente_numero: number
           dentista_id: string | null
+          empresa_id: string | null
           face: string | null
           id: string
           observacao: string | null
@@ -288,6 +413,7 @@ export type Database = {
           data?: string | null
           dente_numero: number
           dentista_id?: string | null
+          empresa_id?: string | null
           face?: string | null
           id?: string
           observacao?: string | null
@@ -298,6 +424,7 @@ export type Database = {
           data?: string | null
           dente_numero?: number
           dentista_id?: string | null
+          empresa_id?: string | null
           face?: string | null
           id?: string
           observacao?: string | null
@@ -310,6 +437,13 @@ export type Database = {
             columns: ["dentista_id"]
             isOneToOne: false
             referencedRelation: "dentistas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_odontograma_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
             referencedColumns: ["id"]
           },
           {
@@ -328,6 +462,7 @@ export type Database = {
           created_at: string | null
           data_nascimento: string | null
           email: string | null
+          empresa_id: string | null
           endereco: string | null
           id: string
           nome: string
@@ -339,6 +474,7 @@ export type Database = {
           created_at?: string | null
           data_nascimento?: string | null
           email?: string | null
+          empresa_id?: string | null
           endereco?: string | null
           id?: string
           nome: string
@@ -350,6 +486,7 @@ export type Database = {
           created_at?: string | null
           data_nascimento?: string | null
           email?: string | null
+          empresa_id?: string | null
           endereco?: string | null
           id?: string
           nome?: string
@@ -363,12 +500,20 @@ export type Database = {
             referencedRelation: "convenios"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_paciente_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
         ]
       }
       prontuario_evolucao: {
         Row: {
           data: string | null
           dentista_id: string
+          empresa_id: string | null
           id: string
           paciente_id: string
           texto: string
@@ -376,6 +521,7 @@ export type Database = {
         Insert: {
           data?: string | null
           dentista_id: string
+          empresa_id?: string | null
           id?: string
           paciente_id: string
           texto: string
@@ -383,6 +529,7 @@ export type Database = {
         Update: {
           data?: string | null
           dentista_id?: string
+          empresa_id?: string | null
           id?: string
           paciente_id?: string
           texto?: string
@@ -393,6 +540,13 @@ export type Database = {
             columns: ["dentista_id"]
             isOneToOne: false
             referencedRelation: "dentistas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_evolucao_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
             referencedColumns: ["id"]
           },
           {
@@ -411,6 +565,7 @@ export type Database = {
           data_prevista: string | null
           dente_numero: number | null
           dentista_id: string
+          empresa_id: string | null
           id: string
           paciente_id: string
           procedimento: string
@@ -423,6 +578,7 @@ export type Database = {
           data_prevista?: string | null
           dente_numero?: number | null
           dentista_id: string
+          empresa_id?: string | null
           id?: string
           paciente_id: string
           procedimento: string
@@ -435,6 +591,7 @@ export type Database = {
           data_prevista?: string | null
           dente_numero?: number | null
           dentista_id?: string
+          empresa_id?: string | null
           id?: string
           paciente_id?: string
           procedimento?: string
@@ -447,6 +604,13 @@ export type Database = {
             columns: ["dentista_id"]
             isOneToOne: false
             referencedRelation: "dentistas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_tratamento_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
             referencedColumns: ["id"]
           },
           {
@@ -463,6 +627,7 @@ export type Database = {
           ativo: boolean | null
           created_at: string | null
           email: string
+          empresa_id: string | null
           id: string
           nome: string
           papel: string
@@ -473,6 +638,7 @@ export type Database = {
           ativo?: boolean | null
           created_at?: string | null
           email: string
+          empresa_id?: string | null
           id: string
           nome: string
           papel?: string
@@ -483,13 +649,22 @@ export type Database = {
           ativo?: boolean | null
           created_at?: string | null
           email?: string
+          empresa_id?: string | null
           id?: string
           nome?: string
           papel?: string
           telefone?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_usuario_empresa"
+            columns: ["empresa_id"]
+            isOneToOne: false
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
