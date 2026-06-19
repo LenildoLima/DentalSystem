@@ -160,16 +160,6 @@ function ConfiguracoesPage() {
             </div>
           </CardContent>
         </Card>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Cor primária">
-                <Input type="color" value={form.cor_primaria} onChange={(e) => set("cor_primaria", e.target.value)} />
-              </Field>
-              <Field label="Cor secundária">
-                <Input type="color" value={form.cor_secundaria} onChange={(e) => set("cor_secundaria", e.target.value)} />
-              </Field>
-            </div>
-          </CardContent>
-        </Card>
 
         <div className="lg:col-span-3 flex justify-end">
           <Button type="submit" disabled={save.isPending || isLoading}>
