@@ -180,3 +180,92 @@ function Field({ label, children, required, className }: { label: string; childr
     </div>
   );
 }
+
+function ImageUploadField({
+  label, folder, value, onChange, previewClassName,
+}: {
+  label: string;
+  folder: "logo" | "banner";
+  value: string;
+  onChange: (url: string) => void;
+  previewClassName?: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Selecione um arquivo de imagem");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Imagem muito grande (máx. 5MB)");
+      return;
+    }
+    setUploading(true);
+    try {
+      const url = await uploadToBucket(file, folder);
+      onChange(url);
+      toast.success("Imagem enviada");
+    } catch (e) {
+      const msg = (e as Error).message;
+      if (msg.toLowerCase().includes("bucket") && msg.toLowerCase().includes("not found")) {
+        toast.error(`Bucket "${BUCKET}" não existe. Crie-o no painel do Supabase (Storage).`);
+      } else {
+        toast.error(msg);
+      }
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
+
+  return (
+    <div>
+      <Label className="text-xs font-medium">{label}</Label>
+      <div className="mt-1.5 flex items-start gap-3">
+        <div className="rounded-md border bg-muted/40 overflow-hidden shrink-0">
+          {value ? (
+            <img src={value} alt={label} className={previewClassName} />
+          ) : (
+            <div className={`${previewClassName} flex items-center justify-center text-muted-foreground`}>
+              <ImageOff className="h-5 w-5" />
+            </div>
+          )}
+        </div>
+        <div className="flex-1 space-y-2">
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+          />
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => inputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Upload className="h-4 w-4 mr-2" />}
+              {uploading ? "Enviando..." : "Escolher imagem"}
+            </Button>
+            {value && (
+              <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
+                <X className="h-4 w-4 mr-1" /> Remover
+              </Button>
+            )}
+          </div>
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="ou cole uma URL"
+            className="h-8 text-xs"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
