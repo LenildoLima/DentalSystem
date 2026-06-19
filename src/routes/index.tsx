@@ -12,7 +12,7 @@ function IndexRedirect() {
     let mounted = true;
     supabase.auth.getSession().then(({ data }) => {
       if (!mounted) return;
-      navigate({ to: data.session ? "/dashboard" : "/auth", replace: true });
+      navigate({ to: data.session ? "/inicio" : "/auth", replace: true });
     });
     return () => {
       mounted = false;

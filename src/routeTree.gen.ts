@@ -14,11 +14,13 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTratamentosRouteImport } from './routes/_authenticated/tratamentos'
 import { Route as AuthenticatedPacientesRouteImport } from './routes/_authenticated/pacientes'
+import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
 import { Route as AuthenticatedDentistasRouteImport } from './routes/_authenticated/dentistas'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConveniosRouteImport } from './routes/_authenticated/convenios'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedPacientesIdRouteImport } from './routes/_authenticated/pacientes.$id'
 
@@ -47,6 +49,11 @@ const AuthenticatedPacientesRoute = AuthenticatedPacientesRouteImport.update({
   path: '/pacientes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
   id: '/financeiro',
   path: '/financeiro',
@@ -72,6 +79,12 @@ const AuthenticatedConveniosRoute = AuthenticatedConveniosRouteImport.update({
   path: '/convenios',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAgendaRoute = AuthenticatedAgendaRouteImport.update({
   id: '/agenda',
   path: '/agenda',
@@ -88,11 +101,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/convenios': typeof AuthenticatedConveniosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/dentistas': typeof AuthenticatedDentistasRoute
   '/estoque': typeof AuthenticatedEstoqueRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/inicio': typeof AuthenticatedInicioRoute
   '/pacientes': typeof AuthenticatedPacientesRouteWithChildren
   '/tratamentos': typeof AuthenticatedTratamentosRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -101,11 +116,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/convenios': typeof AuthenticatedConveniosRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/dentistas': typeof AuthenticatedDentistasRoute
   '/estoque': typeof AuthenticatedEstoqueRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/inicio': typeof AuthenticatedInicioRoute
   '/pacientes': typeof AuthenticatedPacientesRouteWithChildren
   '/tratamentos': typeof AuthenticatedTratamentosRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -116,11 +133,13 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/convenios': typeof AuthenticatedConveniosRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/dentistas': typeof AuthenticatedDentistasRoute
   '/_authenticated/estoque': typeof AuthenticatedEstoqueRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/_authenticated/inicio': typeof AuthenticatedInicioRoute
   '/_authenticated/pacientes': typeof AuthenticatedPacientesRouteWithChildren
   '/_authenticated/tratamentos': typeof AuthenticatedTratamentosRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -131,11 +150,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agenda'
+    | '/configuracoes'
     | '/convenios'
     | '/dashboard'
     | '/dentistas'
     | '/estoque'
     | '/financeiro'
+    | '/inicio'
     | '/pacientes'
     | '/tratamentos'
     | '/pacientes/$id'
@@ -144,11 +165,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/agenda'
+    | '/configuracoes'
     | '/convenios'
     | '/dashboard'
     | '/dentistas'
     | '/estoque'
     | '/financeiro'
+    | '/inicio'
     | '/pacientes'
     | '/tratamentos'
     | '/pacientes/$id'
@@ -158,11 +181,13 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/agenda'
+    | '/_authenticated/configuracoes'
     | '/_authenticated/convenios'
     | '/_authenticated/dashboard'
     | '/_authenticated/dentistas'
     | '/_authenticated/estoque'
     | '/_authenticated/financeiro'
+    | '/_authenticated/inicio'
     | '/_authenticated/pacientes'
     | '/_authenticated/tratamentos'
     | '/_authenticated/pacientes/$id'
@@ -211,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPacientesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/inicio': {
+      id: '/_authenticated/inicio'
+      path: '/inicio'
+      fullPath: '/inicio'
+      preLoaderRoute: typeof AuthenticatedInicioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/financeiro': {
       id: '/_authenticated/financeiro'
       path: '/financeiro'
@@ -246,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedConveniosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/agenda': {
       id: '/_authenticated/agenda'
       path: '/agenda'
@@ -279,22 +318,26 @@ const AuthenticatedPacientesRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedConveniosRoute: typeof AuthenticatedConveniosRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDentistasRoute: typeof AuthenticatedDentistasRoute
   AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
+  AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
   AuthenticatedPacientesRoute: typeof AuthenticatedPacientesRouteWithChildren
   AuthenticatedTratamentosRoute: typeof AuthenticatedTratamentosRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedConveniosRoute: AuthenticatedConveniosRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDentistasRoute: AuthenticatedDentistasRoute,
   AuthenticatedEstoqueRoute: AuthenticatedEstoqueRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
+  AuthenticatedInicioRoute: AuthenticatedInicioRoute,
   AuthenticatedPacientesRoute: AuthenticatedPacientesRouteWithChildren,
   AuthenticatedTratamentosRoute: AuthenticatedTratamentosRoute,
 }
