@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, redirect, Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Users, Calendar, ClipboardList, DollarSign, Package, UserCog, FileHeart, LogOut, Menu, Sparkles } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, ClipboardList, DollarSign, Package, UserCog, FileHeart, LogOut, Menu, Sparkles, Home, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
