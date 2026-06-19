@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,22 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Save, ImageOff } from "lucide-react";
+import { Save, ImageOff, Upload, Loader2, X } from "lucide-react";
+
+const BUCKET = "empresa-assets";
+
+async function uploadToBucket(file: File, folder: "logo" | "banner") {
+  const ext = file.name.split(".").pop() || "png";
+  const path = `${folder}/${Date.now()}.${ext}`;
+  const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+    cacheControl: "3600",
+    upsert: true,
+    contentType: file.type,
+  });
+  if (error) throw error;
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
 
 export const Route = createFileRoute("/_authenticated/configuracoes")({
   component: ConfiguracoesPage,
@@ -120,23 +135,21 @@ function ConfiguracoesPage() {
 
         <Card>
           <CardHeader><CardTitle>Identidade visual</CardTitle></CardHeader>
-          <CardContent className="space-y-4">
-            <Field label="URL do logo">
-              <Input value={form.logo_url} onChange={(e) => set("logo_url", e.target.value)} placeholder="https://..." />
-            </Field>
-            <Field label="URL do banner">
-              <Input value={form.banner_url} onChange={(e) => set("banner_url", e.target.value)} placeholder="https://..." />
-              <p className="text-xs text-muted-foreground mt-1">Exibido na página inicial.</p>
-            </Field>
-            <div className="rounded-md border bg-muted/40 overflow-hidden">
-              {form.banner_url ? (
-                <img src={form.banner_url} alt="Pré-visualização" className="w-full h-32 object-cover" />
-              ) : (
-                <div className="h-32 flex flex-col items-center justify-center text-muted-foreground text-xs gap-1">
-                  <ImageOff className="h-5 w-5" /> Sem banner
-                </div>
-              )}
-            </div>
+          <CardContent className="space-y-5">
+            <ImageUploadField
+              label="Logo da clínica"
+              folder="logo"
+              value={form.logo_url}
+              onChange={(v) => set("logo_url", v)}
+              previewClassName="h-24 w-24 object-contain bg-white"
+            />
+            <ImageUploadField
+              label="Banner da página inicial"
+              folder="banner"
+              value={form.banner_url}
+              onChange={(v) => set("banner_url", v)}
+              previewClassName="w-full h-32 object-cover"
+            />
             <div className="grid grid-cols-2 gap-3">
               <Field label="Cor primária">
                 <Input type="color" value={form.cor_primaria} onChange={(e) => set("cor_primaria", e.target.value)} />
@@ -164,6 +177,95 @@ function Field({ label, children, required, className }: { label: string; childr
     <div className={className}>
       <Label className="text-xs font-medium">{label}{required && <span className="text-destructive"> *</span>}</Label>
       <div className="mt-1.5">{children}</div>
+    </div>
+  );
+}
+
+function ImageUploadField({
+  label, folder, value, onChange, previewClassName,
+}: {
+  label: string;
+  folder: "logo" | "banner";
+  value: string;
+  onChange: (url: string) => void;
+  previewClassName?: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Selecione um arquivo de imagem");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Imagem muito grande (máx. 5MB)");
+      return;
+    }
+    setUploading(true);
+    try {
+      const url = await uploadToBucket(file, folder);
+      onChange(url);
+      toast.success("Imagem enviada");
+    } catch (e) {
+      const msg = (e as Error).message;
+      if (msg.toLowerCase().includes("bucket") && msg.toLowerCase().includes("not found")) {
+        toast.error(`Bucket "${BUCKET}" não existe. Crie-o no painel do Supabase (Storage).`);
+      } else {
+        toast.error(msg);
+      }
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
+
+  return (
+    <div>
+      <Label className="text-xs font-medium">{label}</Label>
+      <div className="mt-1.5 flex items-start gap-3">
+        <div className="rounded-md border bg-muted/40 overflow-hidden shrink-0">
+          {value ? (
+            <img src={value} alt={label} className={previewClassName} />
+          ) : (
+            <div className={`${previewClassName} flex items-center justify-center text-muted-foreground`}>
+              <ImageOff className="h-5 w-5" />
+            </div>
+          )}
+        </div>
+        <div className="flex-1 space-y-2">
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+          />
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => inputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Upload className="h-4 w-4 mr-2" />}
+              {uploading ? "Enviando..." : "Escolher imagem"}
+            </Button>
+            {value && (
+              <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
+                <X className="h-4 w-4 mr-1" /> Remover
+              </Button>
+            )}
+          </div>
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="ou cole uma URL"
+            className="h-8 text-xs"
+          />
+        </div>
+      </div>
     </div>
   );
 }
