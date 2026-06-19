@@ -135,23 +135,31 @@ function ConfiguracoesPage() {
 
         <Card>
           <CardHeader><CardTitle>Identidade visual</CardTitle></CardHeader>
-          <CardContent className="space-y-4">
-            <Field label="URL do logo">
-              <Input value={form.logo_url} onChange={(e) => set("logo_url", e.target.value)} placeholder="https://..." />
-            </Field>
-            <Field label="URL do banner">
-              <Input value={form.banner_url} onChange={(e) => set("banner_url", e.target.value)} placeholder="https://..." />
-              <p className="text-xs text-muted-foreground mt-1">Exibido na página inicial.</p>
-            </Field>
-            <div className="rounded-md border bg-muted/40 overflow-hidden">
-              {form.banner_url ? (
-                <img src={form.banner_url} alt="Pré-visualização" className="w-full h-32 object-cover" />
-              ) : (
-                <div className="h-32 flex flex-col items-center justify-center text-muted-foreground text-xs gap-1">
-                  <ImageOff className="h-5 w-5" /> Sem banner
-                </div>
-              )}
+          <CardContent className="space-y-5">
+            <ImageUploadField
+              label="Logo da clínica"
+              folder="logo"
+              value={form.logo_url}
+              onChange={(v) => set("logo_url", v)}
+              previewClassName="h-24 w-24 object-contain bg-white"
+            />
+            <ImageUploadField
+              label="Banner da página inicial"
+              folder="banner"
+              value={form.banner_url}
+              onChange={(v) => set("banner_url", v)}
+              previewClassName="w-full h-32 object-cover"
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Cor primária">
+                <Input type="color" value={form.cor_primaria} onChange={(e) => set("cor_primaria", e.target.value)} />
+              </Field>
+              <Field label="Cor secundária">
+                <Input type="color" value={form.cor_secundaria} onChange={(e) => set("cor_secundaria", e.target.value)} />
+              </Field>
             </div>
+          </CardContent>
+        </Card>
             <div className="grid grid-cols-2 gap-3">
               <Field label="Cor primária">
                 <Input type="color" value={form.cor_primaria} onChange={(e) => set("cor_primaria", e.target.value)} />
