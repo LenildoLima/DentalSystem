@@ -20,6 +20,7 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 const NAV = [
+  { to: "/inicio", label: "Início", icon: Home },
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/pacientes", label: "Pacientes", icon: Users },
   { to: "/agenda", label: "Agenda", icon: Calendar },
@@ -28,6 +29,7 @@ const NAV = [
   { to: "/estoque", label: "Estoque", icon: Package },
   { to: "/dentistas", label: "Dentistas", icon: UserCog },
   { to: "/convenios", label: "Convênios", icon: FileHeart },
+  { to: "/configuracoes", label: "Configurações", icon: Settings },
 ] as const;
 
 function AuthLayout() {
