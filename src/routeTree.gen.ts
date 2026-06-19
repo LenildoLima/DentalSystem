@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTratamentosRouteImport } from './routes/_authenticated/tratamentos'
 import { Route as AuthenticatedPacientesRouteImport } from './routes/_authenticated/pacientes'
+import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
 import { Route as AuthenticatedFinanceiroRouteImport } from './routes/_authenticated/financeiro'
 import { Route as AuthenticatedEstoqueRouteImport } from './routes/_authenticated/estoque'
 import { Route as AuthenticatedDentistasRouteImport } from './routes/_authenticated/dentistas'
@@ -45,6 +46,11 @@ const AuthenticatedTratamentosRoute =
 const AuthenticatedPacientesRoute = AuthenticatedPacientesRouteImport.update({
   id: '/pacientes',
   path: '/pacientes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFinanceiroRoute = AuthenticatedFinanceiroRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/dentistas': typeof AuthenticatedDentistasRoute
   '/estoque': typeof AuthenticatedEstoqueRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/inicio': typeof AuthenticatedInicioRoute
   '/pacientes': typeof AuthenticatedPacientesRouteWithChildren
   '/tratamentos': typeof AuthenticatedTratamentosRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/dentistas': typeof AuthenticatedDentistasRoute
   '/estoque': typeof AuthenticatedEstoqueRoute
   '/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/inicio': typeof AuthenticatedInicioRoute
   '/pacientes': typeof AuthenticatedPacientesRouteWithChildren
   '/tratamentos': typeof AuthenticatedTratamentosRoute
   '/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/_authenticated/dentistas': typeof AuthenticatedDentistasRoute
   '/_authenticated/estoque': typeof AuthenticatedEstoqueRoute
   '/_authenticated/financeiro': typeof AuthenticatedFinanceiroRoute
+  '/_authenticated/inicio': typeof AuthenticatedInicioRoute
   '/_authenticated/pacientes': typeof AuthenticatedPacientesRouteWithChildren
   '/_authenticated/tratamentos': typeof AuthenticatedTratamentosRoute
   '/_authenticated/pacientes/$id': typeof AuthenticatedPacientesIdRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/dentistas'
     | '/estoque'
     | '/financeiro'
+    | '/inicio'
     | '/pacientes'
     | '/tratamentos'
     | '/pacientes/$id'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/dentistas'
     | '/estoque'
     | '/financeiro'
+    | '/inicio'
     | '/pacientes'
     | '/tratamentos'
     | '/pacientes/$id'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dentistas'
     | '/_authenticated/estoque'
     | '/_authenticated/financeiro'
+    | '/_authenticated/inicio'
     | '/_authenticated/pacientes'
     | '/_authenticated/tratamentos'
     | '/_authenticated/pacientes/$id'
@@ -209,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/pacientes'
       fullPath: '/pacientes'
       preLoaderRoute: typeof AuthenticatedPacientesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inicio': {
+      id: '/_authenticated/inicio'
+      path: '/inicio'
+      fullPath: '/inicio'
+      preLoaderRoute: typeof AuthenticatedInicioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/financeiro': {
@@ -284,6 +303,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDentistasRoute: typeof AuthenticatedDentistasRoute
   AuthenticatedEstoqueRoute: typeof AuthenticatedEstoqueRoute
   AuthenticatedFinanceiroRoute: typeof AuthenticatedFinanceiroRoute
+  AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
   AuthenticatedPacientesRoute: typeof AuthenticatedPacientesRouteWithChildren
   AuthenticatedTratamentosRoute: typeof AuthenticatedTratamentosRoute
 }
@@ -295,6 +315,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDentistasRoute: AuthenticatedDentistasRoute,
   AuthenticatedEstoqueRoute: AuthenticatedEstoqueRoute,
   AuthenticatedFinanceiroRoute: AuthenticatedFinanceiroRoute,
+  AuthenticatedInicioRoute: AuthenticatedInicioRoute,
   AuthenticatedPacientesRoute: AuthenticatedPacientesRouteWithChildren,
   AuthenticatedTratamentosRoute: AuthenticatedTratamentosRoute,
 }
