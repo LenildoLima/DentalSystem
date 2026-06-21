@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, Users, Calendar, ClipboardList, DollarSign, Package, UserCog, FileHeart, LogOut, Menu, Sparkles, Home, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,14 @@ function AuthLayout() {
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
+  const { data: empresa } = useQuery({
+    queryKey: ["empresa"],
+    queryFn: async () => {
+      const { data } = await supabase.from("empresas").select("nome_fantasia, nome, logo_url").limit(1).maybeSingle();
+      return data;
+    },
+  });
+
   const signOut = async () => {
     await supabase.auth.signOut();
     toast.success("Sessão encerrada");
@@ -47,18 +56,23 @@ function AuthLayout() {
   };
 
   const initials = (user.user_metadata?.nome || user.email || "U").slice(0, 2).toUpperCase();
+  const clinicaNome = empresa?.nome_fantasia || empresa?.nome || "DentalSystem";
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/30">
       {/* Topbar */}
       <header className="h-16 bg-card border-b flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-            <Sparkles className="h-4 w-4" />
-          </div>
+          {empresa?.logo_url ? (
+            <img src={empresa.logo_url} alt={clinicaNome} className="h-10 w-10 rounded-lg object-cover" />
+          ) : (
+            <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
+              <Sparkles className="h-4 w-4" />
+            </div>
+          )}
           <div>
             <div className="text-xs text-muted-foreground leading-none">Clínica</div>
-            <div className="font-semibold leading-tight">DentalSystem</div>
+            <div className="font-semibold leading-tight">{clinicaNome}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
