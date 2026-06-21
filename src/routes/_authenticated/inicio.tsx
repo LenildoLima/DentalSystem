@@ -24,15 +24,15 @@ function InicioPage() {
   return (
     <div className="space-y-6">
       {empresa?.banner_url ? (
-        <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+        <div className="flex min-h-[70vh] items-center justify-center overflow-hidden rounded-xl border bg-card shadow-sm p-4">
           <img
             src={empresa.banner_url}
             alt={empresa.nome_fantasia || empresa.nome || "Banner da clínica"}
-            className="w-full h-auto max-h-[520px] object-cover"
+            className="h-auto max-h-[80vh] w-auto max-w-full rounded-lg object-contain"
           />
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed bg-card py-24 text-center">
+        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 rounded-xl border border-dashed bg-card text-center">
           <ImageOff className="h-10 w-10 text-muted-foreground" />
           <div>
             <p className="font-medium">Nenhum banner cadastrado</p>
