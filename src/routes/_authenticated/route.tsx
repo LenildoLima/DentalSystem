@@ -41,6 +41,14 @@ function AuthLayout() {
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
+  const { data: empresa } = useQuery({
+    queryKey: ["empresa"],
+    queryFn: async () => {
+      const { data } = await supabase.from("empresas").select("nome_fantasia, nome, logo_url").limit(1).maybeSingle();
+      return data;
+    },
+  });
+
   const signOut = async () => {
     await supabase.auth.signOut();
     toast.success("Sessão encerrada");
@@ -48,6 +56,7 @@ function AuthLayout() {
   };
 
   const initials = (user.user_metadata?.nome || user.email || "U").slice(0, 2).toUpperCase();
+  const clinicaNome = empresa?.nome_fantasia || empresa?.nome || "DentalSystem";
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/30">
