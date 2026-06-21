@@ -63,12 +63,16 @@ function AuthLayout() {
       {/* Topbar */}
       <header className="h-16 bg-card border-b flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-            <Sparkles className="h-4 w-4" />
-          </div>
+          {empresa?.logo_url ? (
+            <img src={empresa.logo_url} alt={clinicaNome} className="h-10 w-10 rounded-lg object-cover" />
+          ) : (
+            <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
+              <Sparkles className="h-4 w-4" />
+            </div>
+          )}
           <div>
             <div className="text-xs text-muted-foreground leading-none">Clínica</div>
-            <div className="font-semibold leading-tight">DentalSystem</div>
+            <div className="font-semibold leading-tight">{clinicaNome}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
