@@ -1,11 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ImageOff } from "lucide-react";
+import { CalendarDays, ImageOff, MessageCircle, User } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/inicio")({
   component: InicioPage,
 });
+
+const SHORTCUTS = [
+  {
+    label: "Agendamento Fácil",
+    icon: CalendarDays,
+    to: "/agenda" as const,
+    disabled: false,
+  },
+  {
+    label: "Fale Conosco",
+    icon: MessageCircle,
+    to: "/inicio" as const,
+    disabled: true,
+  },
+  {
+    label: "Seu Prontuário",
+    icon: User,
+    to: "/pacientes" as const,
+    disabled: false,
+  },
+];
 
 function InicioPage() {
   const { data: empresa } = useQuery({
@@ -42,6 +63,35 @@ function InicioPage() {
           </div>
         </div>
       )}
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {SHORTCUTS.map(({ label, icon: Icon, to, disabled }) => {
+          const base =
+            "flex items-center justify-center gap-3 rounded-xl border bg-card p-5 shadow-sm transition";
+          if (disabled) {
+            return (
+              <div
+                key={label}
+                className={`${base} cursor-not-allowed opacity-60`}
+                title="Em breve"
+              >
+                <Icon className="h-6 w-6 text-primary" />
+                <span className="font-medium">{label}</span>
+              </div>
+            );
+          }
+          return (
+            <Link
+              key={label}
+              to={to}
+              className={`${base} hover:border-primary hover:shadow-md`}
+            >
+              <Icon className="h-6 w-6 text-primary" />
+              <span className="font-medium">{label}</span>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }
