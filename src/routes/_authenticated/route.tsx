@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, Users, Calendar, ClipboardList, DollarSign, Package, UserCog, FileHeart, LogOut, Menu, Sparkles, Home, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
