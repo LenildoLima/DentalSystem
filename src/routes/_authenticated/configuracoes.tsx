@@ -258,12 +258,6 @@ function ImageUploadField({
               </Button>
             )}
           </div>
-          <Input
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="ou cole uma URL"
-            className="h-8 text-xs"
-          />
         </div>
       </div>
     </div>
